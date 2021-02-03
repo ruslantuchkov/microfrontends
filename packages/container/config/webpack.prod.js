@@ -9,13 +9,18 @@ const prodConfig = {
   mode: 'production',
   output: {
     filename: '[name].[contenthash].js',
+    // Чтобы HtmlWebpackPlugin подставил правильный путь к файлу main.js внутри тега scrtipt в index.html
+    // (он лежит на AWS Bucket по пути /container/latest/)
     publicPath: '/container/latest/'
   },
   plugins: [
     new ModuleFederationPlugin({
       name: 'container',
       remotes: {
-        marketing: `marketing@${domain}/marketing/remoteEntry.js`
+        // когда в коде будет встречено import { ... } from 'marketing/..., то будет сделан запрос за файлом
+        // .../marketing/latest/remoteEntry.js внутри AWS Cloudfront
+        // marketing@... должна совпадать с { name: 'marketing', ... } в параметрах ModuleFederationPlugin в пакете marketing 
+        marketing: `marketing@${domain}/marketing/latest/remoteEntry.js`
       },
       shared: packageJson.dependencies
     }),
