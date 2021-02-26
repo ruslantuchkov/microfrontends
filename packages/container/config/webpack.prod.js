@@ -20,7 +20,8 @@ const prodConfig = {
         // когда в коде будет встречено import { ... } from 'marketing/..., то будет сделан запрос за файлом
         // .../marketing/latest/remoteEntry.js внутри AWS Cloudfront
         // marketing@... должна совпадать с { name: 'marketing', ... } в параметрах ModuleFederationPlugin в пакете marketing 
-        marketing: `marketing@${domain}/marketing/latest/remoteEntry.js`
+        marketing: `marketing@${domain}/marketing/latest/remoteEntry.js`,
+        auth: `auth@${domain}/auth/latest/remoteEntry.js`
       },
       shared: packageJson.dependencies
     }),
